@@ -1,0 +1,6 @@
+{
+  "scripts": {
+    "test": "echo \"Nenhum teste ainda\" && exit 0",
+    "lint": "eslint ."
+  }
+}
