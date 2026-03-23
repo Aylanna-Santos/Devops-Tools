@@ -12,29 +12,28 @@ app.use(express.json()); // Permite que o servidor entenda arquivos JSON
 const PRECO_TICKET = 2.00; // Cada ticket custa 2 reais
 
 app.post('/converter', (req, res) => {
-    const { nome, valor } = req.body;
+    const { nome, valor, formaPagamento } = req.body; // Recebe a forma de pagamento
+    const PRECO_TICKET = 2.00;
 
-    // Validação simples de segurança
-    if (!nome || !valor || valor <= 0) {
-        return res.status(400).json({ 
-            erro: "Por favor, insira um nome válido e um valor maior que zero." 
-        });
-    }
-
-    // 1. Cálculo da quantidade de tickets (Divisão Inteira)
     const totalTickets = Math.floor(valor / PRECO_TICKET);
-
-    // 2. Cálculo do Resto (O que sobrou e não virou ticket)
     const sobra = valor % PRECO_TICKET;
 
-    // 3. Construção da Resposta Personalizada
-    let mensagemFinal = `Sucesso! Foram gerados ${totalTickets} tickets para ${nome}.`;
+    let mensagemFinal = `Sucesso! Foram gerados ${totalTickets} tickets via ${formaPagamento}.`;
     
-    // Lógica de Reembolso (Se o resto for maior que 0)
     if (sobra > 0) {
-        const valorReembolso = sobra.toFixed(2);
-        mensagemFinal += ` Identificamos um saldo restante de R$ ${valorReembolso}, que será reembolsado agora.`;
+        mensagemFinal += ` Reembolso de R$ ${sobra.toFixed(2)} processado.`;
     }
+
+    // Simulando um pequeno atraso no servidor para parecer processamento real
+    setTimeout(() => {
+        res.json({
+            usuario: nome,
+            ticketsGerados: totalTickets,
+            formaPagamento,
+            mensagem: mensagemFinal
+        });
+    }, 1500); // 1.5 segundos de "delay"
+});
 
     // Envio dos dados para o Front-end
     res.json({
@@ -45,7 +44,6 @@ app.post('/converter', (req, res) => {
         mensagem: mensagemFinal,
         status: "Operação Finalizada"
     });
-});
 
 // --- INICIALIZAÇÃO DO SERVIDOR ---
 
