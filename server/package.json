@@ -6,6 +6,8 @@
     "lucide-react": "^0.577.0"
   },
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "lint": "eslint .",
+    "test": "jest"
   }
 }
