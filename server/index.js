@@ -3,17 +3,13 @@ const cors = require('cors');
 
 const app = express();
 
-// Configurações iniciais (Middlewares)
-app.use(cors()); // Permite que o Front-end acesse o Back-end
-app.use(express.json()); // Permite que o servidor entenda arquivos JSON
-
-// --- CONFIGURAÇÃO DO DESAFIO: CONVERSOR DE TICKETS ---
+app.use(cors());
+app.use(express.json());
 
 const PRECO_TICKET = 2.00; // Cada ticket custa 2 reais
 
 app.post('/converter', (req, res) => {
-    const { nome, valor, formaPagamento } = req.body; // Recebe a forma de pagamento
-    const PRECO_TICKET = 2.00;
+    const { nome, valor, formaPagamento } = req.body;
 
     const totalTickets = Math.floor(valor / PRECO_TICKET);
     const sobra = valor % PRECO_TICKET;
@@ -28,29 +24,20 @@ app.post('/converter', (req, res) => {
     setTimeout(() => {
         res.json({
             usuario: nome,
+            valorOriginal: valor,
             ticketsGerados: totalTickets,
+            valorReembolsado: sobra,
             formaPagamento,
-            mensagem: mensagemFinal
+            mensagem: mensagemFinal,
+            status: "Operação Finalizada"
         });
-    }, 1500); // 1.5 segundos de "delay"
+    }, 1500);
 });
-
-    // Envio dos dados para o Front-end
-    res.json({
-        usuario: nome,
-        valorOriginal: valor,
-        ticketsGerados: totalTickets,
-        valorReembolsado: sobra,
-        mensagem: mensagemFinal,
-        status: "Operação Finalizada"
-    });
-
-// --- INICIALIZAÇÃO DO SERVIDOR ---
 
 const PORT = 5000;
 app.listen(PORT, () => {
     console.log("-----------------------------------------");
-    console.log(`🚀 SERVIDOR ALEGRE E PROFISSIONAL RODANDO`);
+    console.log(`🚀 SERVIDOR RODANDO`);
     console.log(`📍 URL: http://localhost:${PORT}`);
     console.log("-----------------------------------------");
 });

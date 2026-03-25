@@ -4,5 +4,8 @@
     "cors": "^2.8.6",
     "express": "^5.2.1",
     "lucide-react": "^0.577.0"
+  },
+  "scripts": {
+    "start": "node index.js"
   }
 }

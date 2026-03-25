@@ -1,7 +1,9 @@
 {
   "scripts": {
-    "test": "echo \"Nenhum teste ainda\" && exit 0",
-    "lint": "eslint ."
+    "start:client": "npm start --prefix client",
+    "start:server": "npm start --prefix server",
+    "lint": "eslint .",
+    "test": "jest"
   },
   "name": "devops-tools",
   "version": "1.0.0",
