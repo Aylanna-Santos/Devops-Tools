@@ -1,29 +1,38 @@
-name: CI Pipeline Node.js
+name: CI Pipeline
 
 on:
   push:
-    branches: [ "dev" ]
+    branches: [ dev, main ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ dev, main ]
 
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout código
+      # 1. Checkout do código
+      - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Configurar Node.js
+      # 2. Configurar Node.js
+      - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '18'
 
-      - name: Instalar dependências
-        run: npm install
+      # 3. Instalar dependências do server
+      - name: Install server dependencies
+        run: npm install --prefix server
 
-      - name: Rodar testes
-        run: npm test
+      # 4. Instalar dependências do client
+      - name: Install client dependencies
+        run: npm install --prefix client
 
-      - name: Análise estática (ESLint)
-        run: npm run lint || echo "Lint falhou, ajuste o código!"
+      # 5. Rodar lint
+      - name: Run ESLint
+        run: npm run lint --prefix server
+
+      # 6. Rodar testes
+      - name: Run tests
+        run: npm test --prefix server
